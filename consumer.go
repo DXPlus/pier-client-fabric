@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"path/filepath"
 
 	"github.com/hyperledger/fabric-protos-go/common"
@@ -92,6 +93,10 @@ func (c *Consumer) Shutdown() error {
 }
 
 func (c *Consumer) handle(deliveries *fab.CCEvent) {
+	// 新增代码
+	log.Printf("Receive cc event, ccid: %v \neventName: %v\n"+ "payload: %v \ntxid: %v \nblock: %v \nsourceURL: %v\n",
+		deliveries.ChaincodeID, deliveries.EventName, string(deliveries.Payload), deliveries.TxID, deliveries.BlockNumber, deliveries.SourceURL)
+
 	l, err := ledger.New(c.channelProvider)
 	if err != nil {
 		return
